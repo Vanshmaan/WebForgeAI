@@ -1,0 +1,131 @@
+import { motion } from "framer-motion";
+import { useState } from "react";
+import LoginModal from "../components/LoginModal";
+import { useSelector } from "react-redux";
+import { Coins } from "lucide-react"
+const Home = () => {
+  const highlights = [
+    "AI Generated Code",
+    "Fully Responsive Layouts",
+    "Production Ready Websites",
+  ];
+
+  const [openlogin, setOpenLogin] = useState(false);
+  const {userData} = useSelector(state=>state.user)
+
+   
+
+  return (
+    <div className="relative min-h-screen bg-[#040404] text-white overflow-hidden">
+
+      {/* Navbar */}
+      <motion.div
+        initial={{ y: -40, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.8 }}
+        className="fixed top-0 left-0 right-0 z-50 backdrop-blur-xl bg-black/40 border-b border-white/10"
+      >
+        <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+
+          <div className="text-2xl font-bold">
+            AI Website Builder
+          </div>
+
+          <div className="hidden md:inline text-sm text-zinc-400 hover:text-white cursor-pointer">
+            Pricing
+          </div>
+
+          {userData && <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/5 border border-white/10 text-sm cursor-pointer hover:bg-white/10 transition">
+            <Coins size={14} className="text-yellow-400 "/>
+            <span className="text-zinc-400">Credits</span>
+            <span>{userData.credits}</span>
+            <span className="font-bold">+</span>
+            </div>}
+
+          {!userData ?  <button onClick={() => setOpenLogin(true)} className="px-4 py-2 rounded-lg border border-white/20 hover:bg-white/10 transition text-sm cursor-pointer">
+            Get Started
+          </button> : <button className="flex items-center">
+  <img
+    className="w-9 h-9 rounded-full border border-white/20 object-cover"
+    src={userData.avatar || `https://ui-avatars.com/api/?name=${userData.name}`}
+    alt="User avatar"
+  />
+</button>}
+         
+
+        </div>
+      </motion.div>
+
+      {/* Hero */}
+      <section className="pt-44 pb-32 px-6 text-center">
+
+        <motion.h1
+          initial={{ y: 40, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.8 }}
+          className="text-5xl md:text-7xl font-bold tracking-tight"
+        >
+          Build Stunning Websites <br />
+          <span className="bg-gradient-to-r from-purple-500 to-blue-500 bg-clip-text text-transparent">
+            with AI
+          </span>
+        </motion.h1>
+
+        <motion.p
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ delay: 0.2 }}
+          className="text-lg md:text-xl text-zinc-400 mt-8 max-w-2xl mx-auto"
+        >
+          Describe your vision, and let our AI craft a beautiful website for you in seconds. No coding, just creativity.
+        </motion.p>
+
+        <button onClick={() => setOpenLogin(true)} className="px-10 py-4 rounded-xl bg-white text-black font-semibold hover:scale-105 transition mt-10 cursor-pointer">
+          Get Started
+        </button>
+
+      </section>
+
+      {/* Cards */}
+      <section className="max-w-7xl mx-auto px-6 pb-32">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
+
+          {highlights.map((h, i) => (
+            <motion.div
+              key={i}
+              initial={{ y: 40, opacity: 0 }}
+              whileInView={{ y: 0, opacity: 1 }}
+              viewport={{ once: true }}
+              whileHover={{ scale: 1.05 }}
+              transition={{ duration: 0.5 }}
+              className="relative rounded-2xl p-8 border border-white/10 bg-white/5 backdrop-blur-xl overflow-hidden"
+            >
+
+              {/* glow effect */}
+              <div className="absolute inset-0 bg-gradient-to-r from-purple-500/10 to-blue-500/10 opacity-0 hover:opacity-100 transition duration-500"></div>
+
+              <h1 className="text-2xl font-bold mb-3 relative z-10">
+                {h}
+              </h1>
+
+              <p className="text-zinc-400 text-sm relative z-10">
+                Builds real websites - clean code, optimized for performance and SEO, ready to deploy with a single click.
+              </p>
+
+            </motion.div>
+          ))}
+
+        </div>
+      </section>
+     <footer className="border-t border-white/10 py-6 text-center text-sm text-zinc-500">
+  © {new Date().getFullYear()} AI Website Builder
+</footer>
+
+{openlogin && <LoginModal open={openlogin} onClose={() => setOpenLogin(false)} />}
+
+
+    </div>
+  );
+};
+
+export default Home;
