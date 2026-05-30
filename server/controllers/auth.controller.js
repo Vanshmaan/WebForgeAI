@@ -40,11 +40,20 @@ export const googleAuth = async (req, res) => {
     });
   }
 };
-export const logout = async (req,res) => {
-    try{
-        return res.clearCookie("token").status(200).json({message: "Logged out successfully"});
-    }
-    catch(err){
-        res.status(500).json({message: `Error occurred while logging out: ${err.message}`});
-    }
-}
+export const logout = async (req, res) => {
+  try {
+    res.clearCookie("token", {
+      httpOnly: true,
+      secure: false,
+      sameSite: "lax",
+    });
+
+    return res.status(200).json({
+      message: "Logout successfully",
+    });
+  } catch (err) {
+    return res.status(500).json({
+      message: `Error occurred while logging out: ${err.message}`,
+    });
+  }
+};

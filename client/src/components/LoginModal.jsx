@@ -20,6 +20,7 @@ const LoginModal = ({ open, onClose }) => {
                 withCredentials: true
             });
             dispatch(setUserData(data.user))
+            onClose()
         }
         catch(err){
             console.error("Google Sign-In Error:", err);
