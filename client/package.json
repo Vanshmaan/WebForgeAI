@@ -7,13 +7,15 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "start" : "node server.js"
   },
   "dependencies": {
     "@monaco-editor/react": "^4.7.0",
     "@reduxjs/toolkit": "^2.12.0",
     "@tailwindcss/vite": "^4.3.0",
     "axios": "^1.16.1",
+    "express": "^5.2.1",
     "firebase": "^12.13.0",
     "lucide-react": "^1.16.0",
     "motion": "^12.40.0",
