@@ -1,5 +1,5 @@
 import { AnimatePresence, motion } from "framer-motion";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import LoginModal from "../components/LoginModal";
 import { useDispatch, useSelector } from "react-redux";
 import { Coins } from "lucide-react";
@@ -11,6 +11,7 @@ import { useNavigate } from "react-router-dom";
 const Home = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const[websites,setWebsites] = useState(null)
 
   const highlights = [
     "AI Generated Code",
@@ -40,6 +41,23 @@ const Home = () => {
     }
   };
 
+  useEffect(() => {
+    if(!userData) return;
+    const handleGetAllWebsites = async () => {
+      
+      try {
+        const result = await axios.get(`${serverUrl}/api/website/get-all`,{withCredentials:true})
+        console.log(result.data)
+        
+        setWebsites(result.data)
+      } catch (error) {
+  console.log(error)
+}
+    }
+    handleGetAllWebsites()
+  },[])
+
+
   return (
     <div className="relative min-h-screen bg-[#040404] text-white overflow-hidden">
       {/* Navbar */}
@@ -52,7 +70,7 @@ const Home = () => {
         <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
           <div className="text-2xl font-bold">Genweb AI</div>
 
-          <div className="hidden md:inline text-sm text-zinc-400 hover:text-white cursor-pointer">
+          <div className="hidden md:inline text-sm text-zinc-400 hover:text-white cursor-pointer" onClick={() => navigate("/pricing")}>
             Pricing
           </div>
 
@@ -64,7 +82,7 @@ const Home = () => {
 
               <span>{userData.credits}</span>
 
-              <span className="font-bold">+</span>
+              <span onClick={() => navigate("/pricing")} className="font-bold">+</span>
             </div>
           )}
 
@@ -172,7 +190,7 @@ const Home = () => {
         </button>
       </section>
 
-      {/* Cards */}
+      {!userData && 
       <section className="max-w-7xl mx-auto px-6 pb-32">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
           {highlights.map((h, i) => (
@@ -198,7 +216,38 @@ const Home = () => {
             </motion.div>
           ))}
         </div>
-      </section>
+      </section>}
+      
+
+      {userData && websites?.length > 0 && (
+        <section className="max-w-7xl mx-auto px-6 pb-32">
+          <h3 className="text-2xl font-semibold mb-6">Your Websites</h3>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {websites.slice(0,3).map((w,i) => (
+              <motion.div 
+              key={i}
+              whileHover={{y:-6}}
+              onClick={() => navigate(`/editor/${w._id}`)}
+              className="cursor-pointer rounded-2xl bg-white/5 border border-white/10 overflow-hidden"
+              >
+                <div className="h-40 bg-black">
+                  <iframe
+                  srcDoc={w.latestCode}
+                  className="w-[140%] h-[140%] scale-[0.72] origin-top-left pointer-events-none bg-white"  />
+
+                </div>
+                <div className="p-4">
+                  <h3 className="text-base font-semibold line-clamp-2">{w.title}</h3>
+                <p className="text-xs text-zinc-400">Last Updated {""}
+                  {new Date(w.updatedAt).toLocaleDateString()}
+                </p>
+                </div>
+
+              </motion.div>
+            ))}
+          </div>
+        </section>
+      )}
 
       <footer className="border-t border-white/10 py-6 text-center text-sm text-zinc-500">
         © {new Date().getFullYear()} AI Website Builder

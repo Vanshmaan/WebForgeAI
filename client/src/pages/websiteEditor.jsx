@@ -79,6 +79,16 @@ const WebsiteEditor = () => {
     handleGetWebsite();
   }, [id]);
 
+   const handleDeploy = async () => {
+    try {
+      const result = await axios.get(`${serverUrl}/api/website/deploy/${website._id}`,{withCredentials:true})
+      window.open(`${result.data.url}`,"_blank")
+    }
+    catch (error) {
+      console.log(error)
+    }
+  }
+
  useEffect(() => {
   if (!updateLoading) return;
 
@@ -154,9 +164,11 @@ const WebsiteEditor = () => {
           <span className="text-xs text-zinc-400">Live Preview</span>
 
           <div className="flex gap-2">
-            <button className="flex items-center gap-2 px-4 py-1.5 rounded-lg bg-gradient-to-r from-indigo-500 to-purple-500 text-sm font-semibold hover:scale-105 transition">
+            {website.deployed ? "" : <button className="flex items-center gap-2 px-4 py-1.5 rounded-lg bg-gradient-to-r from-indigo-500 to-purple-500 text-sm font-semibold hover:scale-105 transition"
+            onClick={handleDeploy}>
               <Rocket size={14} /> Deploy
-            </button>
+            </button> }
+           
             <button onClick={() => setShowChat(true)} className="p-2 cursor-pointer lg:hidden" ><MessageSquare size={18} /></button>
             <button onClick={() => setShowCode(true)} className="p-2 cursor-pointer">
               <Code2 size={18} />

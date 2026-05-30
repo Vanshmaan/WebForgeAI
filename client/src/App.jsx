@@ -5,6 +5,8 @@ import useGetCurrentUser from "./hooks/useGetCurrentUser";
 import { useSelector } from "react-redux";
 import Generate from "./pages/Generate";
 import WebsiteEditor from "./pages/websiteEditor";
+import LiveSite from "./pages/LiveSite";
+import Pricing from "./pages/Pricing";
 
 export const serverUrl = "http://localhost:8000";
 
@@ -32,6 +34,17 @@ const App = () => {
         path="/editor/:id"
         element={userData ? <WebsiteEditor /> : <Home />}
       />
+
+      <Route
+        path="/site/:slug"
+        element = {<LiveSite/>}
+        />
+
+        <Route
+        path="/pricing"
+        element = {<Pricing/>}
+        />
+    
 
 
 
