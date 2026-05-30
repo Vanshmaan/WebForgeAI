@@ -23,7 +23,7 @@ app.post(
 );
 
 app.use(cors({
-  origin: true,
+  origin: "https://webforgeai-2.onrender.com",
   credentials: true
 }));
 
