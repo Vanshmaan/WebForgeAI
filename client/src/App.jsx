@@ -8,7 +8,7 @@ import WebsiteEditor from "./pages/websiteEditor";
 import LiveSite from "./pages/LiveSite";
 import Pricing from "./pages/Pricing";
 
-export const serverUrl = "http://localhost:8000";
+export const serverUrl = "https://webforgeai-134.onrender.com";
 
 const App = () => {
   useGetCurrentUser();
